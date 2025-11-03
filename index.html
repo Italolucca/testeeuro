@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verificação de Segurança</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            max-width: 600px;
+            width: 100%;
+            padding: 40px;
+            text-align: center;
+            animation: slideIn 0.5s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+        }
+        
+        .success {
+            color: #f39c12;
+        }
+        
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 28px;
+        }
+        
+        .warning-box {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 25px 0;
+            text-align: left;
+        }
+        
+        .warning-box h2 {
+            color: #856404;
+            font-size: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .warning-box ul {
+            color: #856404;
+            margin-left: 20px;
+            line-height: 1.8;
+        }
+        
+        .info-text {
+            color: #555;
+            line-height: 1.8;
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+        
+        .highlight {
+            background: #ffe6e6;
+            padding: 15px;
+            border-radius: 6px;
+            border-left: 4px solid #e74c3c;
+            margin: 20px 0;
+            font-weight: bold;
+            color: #c0392b;
+        }
+        
+        .footer {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            color: #777;
+            font-size: 14px;
+        }
+        
+        .status {
+            display: inline-block;
+            background: #e8f5e9;
+            color: #2e7d32;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            margin-top: 10px;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="icon success">⚠️</div>
+        <h1>🎯 ISTO FOI UM TESTE DE PHISHING!</h1>
+        
+        <div class="highlight">
+            Você clicou em um link de um email de teste enviado pela Equipe de TI da Euroquadros
+        </div>
+        
+        <p class="info-text">
+            <strong>Não se preocupe!</strong> Este foi um exercício de conscientização em segurança da informação. 
+            Nenhum dado foi comprometido e você não está em problemas.
+        </p>
+        
+        <div class="warning-box">
+            <h2>🛡️ Como se proteger de phishing real:</h2>
+            <ul>
+                <li>Sempre verifique o remetente do email com atenção</li>
+                <li>Passe o mouse sobre links antes de clicar (não clique diretamente)</li>
+                <li>Desconfie de mensagens urgentes ou ameaçadoras</li>
+                <li>Nunca forneça senhas ou dados sensíveis por email</li>
+                <li>Em caso de dúvida, entre em contato diretamente com o TI</li>
+            </ul>
+        </div>
+        
+        <div class="status">✅ Seu clique foi registrado para fins estatísticos</div>
+        
+        <div class="footer">
+            <strong>Equipe de TI - Euroquadros</strong><br>
+            Este teste faz parte do nosso programa de segurança da informação
+        </div>
+    </div>
+    
+    <script>
+        // Captura o email do parâmetro da URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const userEmail = urlParams.get('user') || 'desconhecido';
+        const timestamp = new Date().toISOString();
+        
+        // Envia notificação para o Google Forms (VOCÊ PRECISA CRIAR O FORMULÁRIO)
+        // Ou pode usar webhook do Discord, Slack, etc.
+        
+        // Envia dados para o Google Forms automaticamente
+        const googleFormUrl = 'https://docs.google.com/forms/d/e/1FAIpQLSfrAxV8aBwjSXmfocQvxc8ju9sc18aJ2z2kD8b9TRmPz_Kj2A/formResponse';
+        const formData = new FormData();
+        formData.append('entry.1372646640', userEmail);
+        formData.append('entry.1355307390', timestamp);
+        
+        // Envia silenciosamente (não funciona por CORS, mas fica registrado)
+        fetch(googleFormUrl, {
+            method: 'POST',
+            body: formData,
+            mode: 'no-cors'
+        }).catch(err => console.log('Enviado'));
+        
+        // Log no console para você testar localmente
+        console.log('Clique registrado:', userEmail, timestamp);
+    </script>
+</body>
+</html>
