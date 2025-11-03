@@ -155,24 +155,51 @@
         const userEmail = urlParams.get('user') || 'desconhecido';
         const timestamp = new Date().toISOString();
         
-        // Envia notificação para o Google Forms (VOCÊ PRECISA CRIAR O FORMULÁRIO)
-        // Ou pode usar webhook do Discord, Slack, etc.
+        // Configuração do Google Forms
+        const formId = '1FAIpQLSfrAxV8aBwjSXmfocQvxc8ju9sc18aJ2z2kD8b9TRmPz_Kj2A';
+        const emailEntry = 'entry.1372646640';
+        const timestampEntry = 'entry.1355307390';
         
-        // Envia dados para o Google Forms automaticamente
-        const googleFormUrl = 'https://docs.google.com/forms/d/e/1FAIpQLSfrAxV8aBwjSXmfocQvxc8ju9sc18aJ2z2kD8b9TRmPz_Kj2A/formResponse';
-        const formData = new FormData();
-        formData.append('entry.1372646640', userEmail);
-        formData.append('entry.1355307390', timestamp);
+        // Cria um iframe oculto para enviar sem problemas de CORS
+        const iframe = document.createElement('iframe');
+        iframe.style.display = 'none';
+        iframe.name = 'hidden_iframe';
+        document.body.appendChild(iframe);
         
-        // Envia silenciosamente (não funciona por CORS, mas fica registrado)
-        fetch(googleFormUrl, {
-            method: 'POST',
-            body: formData,
-            mode: 'no-cors'
-        }).catch(err => console.log('Enviado'));
+        // Cria o formulário e configura para submeter via iframe
+        const form = document.createElement('form');
+        form.target = 'hidden_iframe';
+        form.method = 'POST';
+        form.action = `https://docs.google.com/forms/d/e/${formId}/formResponse`;
         
-        // Log no console para você testar localmente
-        console.log('Clique registrado:', userEmail, timestamp);
+        // Adiciona o campo de email
+        const inputEmail = document.createElement('input');
+        inputEmail.type = 'hidden';
+        inputEmail.name = emailEntry;
+        inputEmail.value = userEmail;
+        
+        // Adiciona o campo de timestamp
+        const inputTimestamp = document.createElement('input');
+        inputTimestamp.type = 'hidden';
+        inputTimestamp.name = timestampEntry;
+        inputTimestamp.value = timestamp;
+        
+        // Monta o formulário
+        form.appendChild(inputEmail);
+        form.appendChild(inputTimestamp);
+        document.body.appendChild(form);
+        
+        // Submete o formulário automaticamente
+        form.submit();
+        
+        // Remove os elementos após o envio
+        setTimeout(() => {
+            document.body.removeChild(form);
+            document.body.removeChild(iframe);
+        }, 1000);
+        
+        // Log no console para verificação
+        console.log('✅ Clique registrado:', userEmail, timestamp);
     </script>
 </body>
 </html>
